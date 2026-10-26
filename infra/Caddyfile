@@ -1,0 +1,38 @@
+# ─────────────────────────────────────────────────────────────────────────────
+# Dento V2 — Caddy reverse proxy (API only — SPAs hosted on Vercel)
+# Place at: /etc/caddy/Caddyfile
+# Reload:   sudo systemctl reload caddy
+# ─────────────────────────────────────────────────────────────────────────────
+
+(security_headers) {
+	header {
+		Strict-Transport-Security "max-age=31536000; includeSubDomains; preload"
+		X-Content-Type-Options "nosniff"
+		X-Frame-Options "DENY"
+		Referrer-Policy "strict-origin-when-cross-origin"
+		Permissions-Policy "geolocation=(), microphone=(), camera=()"
+		-Server
+	}
+}
+
+# ── API (Fastify on :3000 in Docker) ─────────────────────────────────────────
+apidento.pixelws.de {
+	import security_headers
+
+	encode gzip zstd
+
+	# WebSocket / Socket.io support is automatic in reverse_proxy
+	reverse_proxy localhost:3000 {
+		header_up X-Real-IP {remote_host}
+		header_up X-Forwarded-For {remote_host}
+		header_up X-Forwarded-Proto {scheme}
+	}
+
+	log {
+		output file /var/log/caddy/api.log {
+			roll_size 100mb
+			roll_keep 5
+		}
+		format json
+	}
+}

@@ -1,0 +1,40 @@
+@import '@dento/ui/globals.css';
+
+/* Tell Tailwind v4 to scan @dento/ui source for utility classes */
+@source "../../../../packages/ui/src";
+
+/* ═══════════════════════════════════════════════════════════════════════
+   Developer Portal — Blue Brand + Emerald Accent
+   Primary: Tailwind Blue (#3B82F6) — fixed, never changes
+   Accent:  Tailwind Emerald (#10B981) — for green accent highlights
+   ═══════════════════════════════════════════════════════════════════════ */
+
+@theme {
+  /* ── Brand Color Scale (Blue) ──────────────────────────────────── */
+  --color-brand-25: #f0f7ff;
+  --color-brand-50: #eff6ff;
+  --color-brand-100: #dbeafe;
+  --color-brand-200: #bfdbfe;
+  --color-brand-300: #93c5fd;
+  --color-brand-400: #60a5fa;
+  --color-brand-500: #3b82f6;
+  --color-brand-600: #2563eb;
+  --color-brand-700: #1d4ed8;
+  --color-brand-800: #1e40af;
+  --color-brand-900: #1e3a8a;
+  --color-brand-950: #172554;
+
+  /* ── Emerald Accent (Green highlights) ─────────────────────────── */
+  --color-emerald-25: #f0fdf6;
+  --color-emerald-50: #ecfdf5;
+  --color-emerald-100: #d1fae5;
+  --color-emerald-200: #a7f3d0;
+  --color-emerald-300: #6ee7b7;
+  --color-emerald-400: #34d399;
+  --color-emerald-500: #10b981;
+  --color-emerald-600: #059669;
+  --color-emerald-700: #047857;
+  --color-emerald-800: #065f46;
+  --color-emerald-900: #064e3b;
+  --color-emerald-950: #022c22;
+}

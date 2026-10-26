@@ -1,0 +1,541 @@
+/**
+ * Settings feature — Translation keys
+ * Sources: SettingsPage.tsx, WhatsAppBotTab.tsx, SessionsTab.tsx,
+ *          OnlineBookingSettingsTab.tsx, NotificationSettingsTab.tsx,
+ *          CustomFieldsManager.tsx, ChannelsCard.tsx, BookingWidgetTab.tsx
+ */
+
+export const settings = {
+  // ── Page-level ────────────────────────────────────────
+  page: {
+    title: 'Settings',
+    description: 'Manage your clinic settings and branding',
+  },
+
+  // ── Tab labels ────────────────────────────────────────
+  tabs: {
+    general: 'General',
+    branding: 'Branding',
+    notifications: 'Notifications',
+    sessions: 'Sessions',
+    onlineBooking: 'Online Booking',
+    bookingWidget: 'Booking Widget',
+    whatsappBot: 'WhatsApp Bot',
+    channels: 'Channels',
+    billing: 'Billing',
+    customFields: 'Custom Fields',
+    security: 'Security',
+  },
+
+  // ── Security Tab ──────────────────────────────────────
+  security: {
+    twoFactor: {
+      title: 'Two-Factor Authentication',
+      description: 'Require users to verify their identity with a second factor when logging in.',
+      require: 'Require Two-Factor Authentication',
+      requireDescription:
+        'When enabled, selected roles must set up 2FA before accessing the system.',
+      roles: 'Required for Roles',
+      rolesDescription:
+        'Select which roles must use two-factor authentication. Leave empty to apply to all roles.',
+    },
+    lockout: {
+      title: 'Session & Lockout',
+      description: 'Configure session timeout and brute-force protection.',
+      sessionTimeout: 'Session Timeout (minutes)',
+      sessionTimeoutHelp:
+        'Users will be logged out after this period of inactivity. Range: 5–1440 min.',
+      maxAttempts: 'Max Login Attempts',
+      maxAttemptsHelp: 'Account is locked after this many failed login attempts. Range: 3–20.',
+      duration: 'Lockout Duration (minutes)',
+      durationHelp:
+        'How long the account stays locked after exceeding max attempts. Range: 1–1440 min.',
+    },
+  },
+
+  // ── General Tab ───────────────────────────────────────
+  general: {
+    errorTitle: 'Failed to load settings',
+    errorMessage: 'Please check your connection and try again.',
+    clinicInfo: {
+      title: 'Clinic Information',
+      description: 'Basic clinic details shown throughout the system',
+      clinicName: 'Clinic Name',
+      phone: 'Phone',
+      email: 'Email',
+      address: 'Address',
+    },
+    locale: {
+      title: 'Locale Settings',
+      description: 'Language, currency, timezone, and date format',
+      language: 'Language',
+      currency: 'Currency',
+      timezone: 'Timezone',
+      dateFormat: 'Date Format',
+    },
+    currencyOptions: {
+      egp: 'EGP — Egyptian Pound',
+      sar: 'SAR — Saudi Riyal',
+      aed: 'AED — UAE Dirham',
+      usd: 'USD — US Dollar',
+    },
+    timezoneOptions: {
+      cairo: 'Africa/Cairo (UTC+2)',
+      riyadh: 'Asia/Riyadh (UTC+3)',
+      dubai: 'Asia/Dubai (UTC+4)',
+      utc: 'UTC',
+    },
+    workingHours: {
+      title: 'Working Hours',
+      description: "Set your clinic's operating schedule",
+      start: 'Start',
+      end: 'End',
+      active: 'Active',
+      closed: 'Closed',
+      off: 'Off',
+    },
+    days: {
+      sunday: 'Sunday',
+      monday: 'Monday',
+      tuesday: 'Tuesday',
+      wednesday: 'Wednesday',
+      thursday: 'Thursday',
+      friday: 'Friday',
+      saturday: 'Saturday',
+    },
+    saveChanges: 'Save Changes',
+  },
+
+  // ── Branding Tab ──────────────────────────────────────
+  branding: {
+    logo: {
+      title: 'Logo',
+      description:
+        'Upload your clinic logo for light and dark themes, plus a favicon for the browser tab',
+      lightLogo: 'Logo (Light)',
+      sidebar: 'Sidebar',
+      noLogoUploaded: 'No logo uploaded',
+      uploadLightLogo: 'Upload Light Logo',
+      darkLogo: 'Logo (Dark)',
+      darkMode: 'Dark Mode',
+      noDarkLogo: 'No dark logo',
+      uploadDarkLogo: 'Upload Dark Logo',
+      favicon: 'Favicon',
+      browserTab: 'Browser Tab',
+      noFavicon: 'No favicon',
+      uploadFavicon: 'Upload Favicon',
+    },
+    logoDisplay: {
+      title: 'Logo Display',
+      description: 'Control the size, alignment, and layout of your logo in the sidebar',
+      size: 'Size',
+      sizeSmall: 'Small',
+      sizeMedium: 'Medium',
+      sizeLarge: 'Large',
+      alignment: 'Alignment',
+      alignLeft: 'Left',
+      alignCenter: 'Center',
+      alignRight: 'Right',
+      layout: 'Layout',
+      layoutSide: 'Side',
+      layoutStacked: 'Stacked',
+      layoutLogoOnly: 'Logo Only',
+    },
+    livePreview: {
+      title: 'Live Preview',
+      description: 'How your branding looks in the sidebar and browser tab',
+      sidebarLight: 'Sidebar (Light)',
+      sidebarDark: 'Sidebar (Dark)',
+      browserTab: 'Browser Tab',
+    },
+    clinicName: {
+      title: 'Clinic Name',
+      description: 'Bilingual clinic name for documents and headers (English + Arabic)',
+      englishName: 'English Name',
+      arabicName: 'Arabic Name',
+    },
+    contactAddress: {
+      title: 'Contact & Address',
+      description: 'Main branch address used on all document headers',
+      addressEnglish: 'Address (English)',
+      addressArabic: 'Address (Arabic)',
+      phone: 'Phone',
+      email: 'Email',
+      website: 'Website',
+    },
+    colors: {
+      title: 'Brand Colors',
+      description: 'Primary color for sidebar & buttons, accent for highlights & success states',
+      primaryColor: 'Primary Color',
+      accentColor: 'Accent Color',
+    },
+    propagation: {
+      title: 'Branding Propagation',
+      description: 'Where your branding is applied across the system (all FREE in v2)',
+      sidebarLogo: 'Sidebar Logo',
+      loginPage: 'Login Page',
+      invoicePdfs: 'Invoice PDFs',
+      prescriptionPdfs: 'Prescription PDFs',
+      treatmentPlans: 'Treatment Plans',
+      consentForms: 'Consent Forms',
+      emailTemplates: 'Email Templates',
+      browserTabLabel: 'Browser Tab',
+      notificationEmails: 'Notification Emails',
+      active: 'Active',
+      notSet: 'Not Set',
+      dynamicLightDarkLogo: 'Dynamic light/dark logo',
+      logoClinicName: 'Logo + clinic name',
+      logoNameAddress: 'Logo + name + address',
+      logoNameDoctor: 'Logo + name + doctor',
+      nameAddress: 'Name + address',
+      logoInEmailHeader: 'Logo in email header',
+      faviconClinicName: 'Favicon + clinic name',
+      logoInNotifications: 'Logo in notifications',
+    },
+    uploading: 'Uploading…',
+    resetToDefaults: 'Reset to Defaults',
+    saveBranding: 'Save Branding',
+  },
+
+  // ── Coming Soon ───────────────────────────────────────
+  comingSoon: {
+    description: 'This section will be available in a future phase',
+    badge: 'Coming in Phase 3',
+  },
+
+  // ── WhatsApp Bot Tab ──────────────────────────────────
+  whatsappBot: {
+    title: 'WhatsApp Booking Bot',
+    description: 'Allow patients to book appointments via WhatsApp conversation',
+    statusActive: 'Active',
+    statusDisabled: 'Disabled',
+    webhookUrls: {
+      title: 'Webhook URLs',
+      description: 'Configure these URLs in your Twilio or Meta WhatsApp dashboard...',
+      twilioLabel: 'Twilio Webhook URL',
+      twilioHint:
+        'Paste this in Twilio Console → Messaging → WhatsApp Sandbox Settings → "When a message comes in"',
+      metaLabel: 'Meta Webhook URL',
+      metaHint: 'Paste this in Meta Business Suite → WhatsApp → Configuration → Webhook URL',
+    },
+    config: {
+      title: 'Configuration',
+      provider: 'WhatsApp Provider',
+      providerTwilio: 'Twilio (Sandbox / Production)',
+      providerMeta: 'Meta Business API',
+      defaultLanguage: 'Default Language',
+      languageEnglish: 'English',
+      languageArabic: 'العربية (Arabic)',
+      sessionTimeout: 'Session Timeout (minutes)',
+      sessionTimeoutHint: 'Conversation resets after this period of inactivity.',
+      welcomeMessage: 'Custom Welcome Message (optional)',
+      welcomeMessageHint: 'Leave empty to use the default greeting',
+    },
+    saveSettings: 'Save Settings',
+    howItWorks: {
+      title: 'How It Works',
+      step1: 'Patient sends any message to your WhatsApp number',
+      step2: 'Bot greets the patient and asks for their phone number to identify their account',
+      step3:
+        'If registered, the bot links to the existing patient profile. Otherwise, it collects name and email to create a new record',
+      step4: 'Bot presents available branches (if multiple) and the patient picks one',
+      step5: 'Bot shows the list of services offered by the selected branch',
+      step6: 'Bot lists available doctors for the chosen service at that branch',
+      step7: 'Bot shows the next available dates/times and the patient picks a slot',
+      step8: 'Bot summarizes the booking and asks for confirmation',
+      step9: 'Appointment is created in the system and the patient receives a confirmation message',
+    },
+    toast: {
+      webhookCopied: 'Webhook URL copied to clipboard',
+    },
+  },
+
+  // ── Sessions Tab ──────────────────────────────────────
+  sessions: {
+    title: 'Active Sessions',
+    description:
+      'Manage logged-in sessions for this clinic. Revoke suspicious sessions to keep accounts secure.',
+    columns: {
+      user: 'User',
+      device: 'Device',
+      ip: 'IP',
+      loginTime: 'Login Time',
+      lastActive: 'Last Active',
+      status: 'Status',
+    },
+    currentSession: 'This is your current session',
+    noSessions: 'No active sessions.',
+    revoke: 'Revoke',
+    revokeAllOther: 'Revoke All Other Sessions',
+  },
+
+  // ── Online Booking Tab ────────────────────────────────
+  onlineBooking: {
+    configTitle: 'Online booking configuration',
+    enabled: 'Enabled',
+    disabled: 'Disabled',
+    enableToggle: {
+      label: 'Enable Online Booking',
+      description: 'Allow patients to book appointments online for this branch',
+    },
+    confirmation: {
+      title: 'Confirmation',
+      autoConfirmLabel: 'Auto-Confirm',
+      autoConfirmDescription: 'Automatically confirm bookings',
+      leadTimeLabel: 'Lead Time (hours)',
+      leadTimeDescription: 'Auto-confirm if booked this many hours ahead',
+    },
+    patientRequirements: {
+      title: 'Patient Requirements',
+      phoneRequired: 'Phone Required',
+      phoneDescription: 'Require patient phone number',
+      emailRequired: 'Email Required',
+      emailDescription: 'Require patient email address',
+    },
+    bookingOptions: {
+      title: 'Booking Options',
+      allowDoctorSelection: 'Allow Doctor Selection',
+      allowDoctorDescription: 'Let patients choose their preferred doctor',
+      enabledServices: 'Enabled Services',
+      enabledServicesDescription: 'Select which services are available for online booking',
+      noServices: 'No services configured',
+    },
+    confirmationMessage: {
+      label: 'Confirmation Message',
+      description: 'Message shown to the patient after booking',
+      placeholder: 'Thank you for booking. We will confirm your appointment shortly.',
+    },
+    saveChanges: 'Save Changes',
+    noBranches: {
+      title: 'No Branches Found',
+      description: 'Create a branch first to configure online booking settings',
+    },
+    topDescription:
+      'Configure online booking for each branch. Patients will be able to book appointments through the public booking widget or API.',
+  },
+
+  // ── Notification Settings Tab ─────────────────────────
+  notifications: {
+    tabs: {
+      preferences: 'Preferences',
+      templates: 'Templates',
+    },
+    categories: {
+      appointments: 'Appointments',
+      appointmentsDesc: 'Appointment reminders and updates',
+      payments: 'Payments',
+      paymentsDesc: 'Payment confirmations and receipts',
+      clinical: 'Clinical',
+      clinicalDesc: 'Clinical alerts and lab results',
+      inventory: 'Inventory',
+      inventoryDesc: 'Stock alerts and reorder notifications',
+      system: 'System',
+      systemDesc: 'System alerts and maintenance notices',
+      marketing: 'Marketing',
+      marketingDesc: 'Promotional emails and campaigns',
+      recall: 'Recall',
+      recallDesc: 'Patient recall and follow-up reminders',
+      queue: 'Queue',
+      queueDesc: 'Queue status and wait time updates',
+    },
+    channels: {
+      title: 'Notification Channels',
+      description: 'Enable or disable notification channels globally...',
+      email: 'Email',
+      sms: 'SMS',
+      whatsapp: 'WhatsApp',
+      push: 'Push',
+      inApp: 'In-App',
+    },
+    categoryPreferences: {
+      title: 'Category Preferences',
+      description: 'Control which categories you receive notifications for...',
+    },
+    triggerLabels: {
+      auto: 'Auto',
+      manual: 'Manual',
+      scheduled: 'Scheduled',
+    },
+    delivery: {
+      title: 'Delivery Mode',
+      description: 'Choose how you receive notifications — instantly or in digests.',
+      realtime: 'Realtime',
+      realtimeDesc: 'Receive notifications as they happen',
+      daily: 'Daily Digest',
+      dailyDesc: 'Get a daily summary of all notifications',
+      weekly: 'Weekly Digest',
+      weeklyDesc: 'Get a weekly summary of all notifications',
+    },
+    quietHours: {
+      title: 'Quiet Hours',
+      description: 'Pause non-urgent notifications during specified hours.',
+      enableLabel: 'Enable quiet hours',
+      start: 'Start',
+      end: 'End',
+    },
+    sound: {
+      title: 'Notification Sound',
+      description: 'Choose a sound that plays when you receive a new notification.',
+    },
+    errorLoading: 'Failed to load notification preferences',
+    allCategories: 'All',
+    enabled: 'Enabled',
+    disabled: 'Disabled',
+    templates: {
+      title: 'Notification Templates',
+      description: 'Manage reusable notification templates for all channels',
+      newTemplate: 'New Template',
+      searchPlaceholder: 'Search by name or key...',
+      errorLoading: 'Failed to load templates',
+      emptyTitle: 'No templates found',
+      emptyFiltered: 'Try adjusting your search or filter.',
+      emptyDefault: 'Create your first notification template to get started.',
+    },
+  },
+
+  // ── Custom Fields Tab ─────────────────────────────────
+  customFields: {
+    title: 'Custom Fields',
+    description:
+      'Add custom data fields to your clinic records. Select an entity type to manage its fields.',
+    entities: {
+      patient: 'Patient',
+      appointment: 'Appointment',
+      invoice: 'Invoice',
+      treatmentPlan: 'Treatment Plan',
+      prescription: 'Prescription',
+      labOrder: 'Lab Order',
+    },
+    fieldTypes: {
+      text: 'Text',
+      number: 'Number',
+      date: 'Date',
+      boolean: 'Boolean',
+      select: 'Select',
+      multiSelect: 'Multi-select',
+      textarea: 'Textarea',
+      email: 'Email',
+      phone: 'Phone',
+      url: 'URL',
+    },
+    fieldsFor: 'Fields',
+    addField: 'Add Field',
+    searchPlaceholder: 'Search fields…',
+    emptyState: 'No custom fields for this entity yet. Click "Add Field" to create one.',
+    required: 'Required',
+    editField: 'Edit Field',
+    newField: 'New Field',
+    form: {
+      fieldKey: 'Field Key',
+      fieldKeyPlaceholder: 'e.g. bloodType',
+      fieldKeyHint: 'camelCase, letters and numbers only. Cannot be changed after creation.',
+      fieldType: 'Field Type',
+      labelEn: 'Label (English) *',
+      labelAr: 'Label (Arabic)',
+      descriptionEn: 'Description (English)',
+      descriptionAr: 'Description (Arabic)',
+      required: 'Required',
+      active: 'Active',
+      showInList: 'Show in List',
+      showInForm: 'Show in Form',
+      defaultValue: 'Default Value',
+      sortOrder: 'Sort Order',
+      editingDescription: 'Editing "{{fieldName}}" field',
+      addingDescription: 'Add a new custom field to {{entityName}}',
+    },
+    options: {
+      title: 'Options',
+      value: 'Value',
+      labelEn: 'Label (EN)',
+      labelAr: 'Label (AR)',
+      addOption: 'Add Option',
+    },
+    actions: {
+      cancel: 'Cancel',
+      saving: 'Saving…',
+      updateField: 'Update Field',
+      createField: 'Create Field',
+    },
+    deleteDialog: {
+      title: 'Delete Custom Field',
+      description:
+        'Are you sure you want to delete "{{fieldName}}"? This will permanently remove all data stored in this field across all records.',
+    },
+  },
+
+  // ── Channels Card ─────────────────────────────────────
+  channels: {
+    title: 'Communication Channels',
+    description:
+      'Current status of notification and messaging channels. Channel configuration is managed from the Developer Portal.',
+    email: {
+      label: 'Email',
+      description: 'Appointment confirmations, reminders, and receipts',
+    },
+    sms: {
+      label: 'SMS',
+      description: 'Text message reminders and booking confirmations',
+    },
+    whatsapp: {
+      label: 'WhatsApp',
+      description: 'WhatsApp messages for booking and follow-ups',
+    },
+    push: {
+      label: 'Push Notifications',
+      description: 'Browser and mobile push notifications',
+    },
+    statusActive: 'Active',
+    statusNotConfigured: 'Not Configured',
+    provider: 'Provider:',
+    configHint:
+      'Channel credentials are configured at the platform level. To enable channels, go to the Developer Portal → Settings → Platform Channels and toggle them on.',
+    errorLoading: 'Failed to load channel status',
+    errorMessage: 'Please check your connection and try again.',
+  },
+
+  // ── Booking Widget Tab ────────────────────────────────
+  bookingWidget: {
+    embedCode: {
+      title: 'Embed Code',
+      description: 'Add this code to your website to display the booking widget...',
+      copied: 'Copied',
+      copy: 'Copy',
+      hint: 'The widget will appear as a floating button on your website...',
+    },
+    customization: {
+      title: 'Widget Customization',
+      description: 'Customize the appearance and behavior of your booking widget.',
+      primaryColor: 'Primary Color',
+      buttonPosition: 'Button Position',
+      bottomRight: 'Bottom Right',
+      bottomLeft: 'Bottom Left',
+      widgetLanguage: 'Widget Language',
+      english: 'English',
+      arabic: 'Arabic (العربية)',
+      buttonText: 'Button Text',
+      buttonTextPlaceholder: 'Book Now',
+      showPoweredBy: 'Show "Powered by Dento"',
+      showPoweredByDescription: 'Display branding footer in the booking widget panel.',
+    },
+    saveWidgetSettings: 'Save Widget Settings',
+    preview: {
+      title: 'Widget Preview',
+      description: 'This is how the booking widget will appear on your website.',
+      floatingButton: 'Floating Button',
+      bookingPanel: 'Booking Panel',
+      bookAppointment: 'Book an Appointment',
+      chooseBranch: 'Choose a Branch',
+      selectBranch: 'Select a branch...',
+      chooseDoctor: 'Choose a Doctor',
+      selectDoctor: 'Select a doctor...',
+      chooseDate: 'Choose a Date',
+      chooseTime: 'Choose a Time',
+      bookAppointmentBtn: 'Book Appointment',
+      poweredByDento: 'Powered by Dento',
+    },
+    toast: {
+      embedCopied: 'Embed code copied to clipboard',
+      copyFailed: 'Failed to copy',
+    },
+  },
+} as const;

@@ -1,0 +1,45 @@
+# Dependencies
+node_modules/
+
+# Build outputs
+dist/
+.next/
+.turbo/
+*.tsbuildinfo
+
+# Environment files
+.env
+.env.local
+.env.*.local
+
+# IDE
+.idea/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+logs/
+
+# Testing
+coverage/
+test-results/
+playwright-report/
+tests/e2e/.auth/
+tests/e2e/test-results/
+tests/e2e/playwright-report/
+
+# Docker volumes
+mongo-data/
+redis-data/
+
+# Misc
+*.swp
+*.swo
+*~
+
+.env.backup
+
+.zap-reports/

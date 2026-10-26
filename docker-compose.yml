@@ -1,0 +1,58 @@
+services:
+  mongodb:
+    image: mongo:8.0
+    container_name: dento-mongodb
+    ports:
+      - '27017:27017'
+    volumes:
+      - mongo-data:/data/db
+    restart: unless-stopped
+
+  redis:
+    image: redis:8.8-alpine
+    container_name: dento-redis
+    ports:
+      - '6380:6379'
+    volumes:
+      - redis-data:/data
+    restart: unless-stopped
+
+  api:
+    build:
+      context: .
+      dockerfile: apps/api/Dockerfile
+    container_name: dento-api
+    ports:
+      - '3001:3001'
+    env_file:
+      - apps/api/.env
+    depends_on:
+      - mongodb
+      - redis
+    restart: unless-stopped
+
+  admin:
+    build:
+      context: .
+      dockerfile: apps/admin/Dockerfile
+    container_name: dento-admin
+    ports:
+      - '3000:80'
+    depends_on:
+      - api
+    restart: unless-stopped
+
+  developer:
+    build:
+      context: .
+      dockerfile: apps/developer/Dockerfile
+    container_name: dento-developer
+    ports:
+      - '3002:80'
+    depends_on:
+      - api
+    restart: unless-stopped
+
+volumes:
+  mongo-data:
+  redis-data:

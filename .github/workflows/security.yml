@@ -1,0 +1,32 @@
+name: Security Scan
+
+on:
+  push:
+    branches: [main]
+  schedule:
+    - cron: '0 6 * * 1' # Weekly Monday 06:00 UTC
+
+jobs:
+  trufflehog:
+    name: TruffleHog Secret Scan
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+
+      - name: TruffleHog Secret Scan
+        run: |
+          docker run --rm \
+            -v "$PWD:/repo" \
+            -w /repo \
+            ghcr.io/trufflesecurity/trufflehog:3.95.5 \
+            filesystem . \
+            --exclude-paths .trufflehog-exclude.txt \
+            --only-verified \
+            --fail \
+            --no-update \
+            --github-actions

@@ -1,0 +1,117 @@
+name: CI
+
+on:
+  push:
+    branches: [main, develop]
+  pull_request:
+    branches: [main, develop]
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  lint-typecheck-test:
+    name: Lint → Type Check → Test → Build
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v6
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: pnpm
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Lint
+        run: pnpm lint
+
+      - name: Type check
+        run: pnpm type-check
+
+      - name: Test
+        run: pnpm test
+
+      - name: Test with Coverage (API)
+        run: pnpm --filter @dento/api exec vitest run --coverage
+        env:
+          NODE_ENV: test
+
+      - name: Build
+        run: pnpm build
+
+  security:
+    name: Security Audit
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v6
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: pnpm
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Audit dependencies
+        run: pnpm audit --audit-level=high
+        continue-on-error: true
+
+  contract-tests:
+    name: API Contract Tests
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+
+    # Contract tests boot the real Fastify app, which needs Redis. MongoDB is
+    # provided in-memory by mongodb-memory-server (pinned to 8.0), so no Mongo
+    # service is required here.
+    services:
+      redis:
+        image: redis:8.8-alpine
+        ports:
+          - 6379:6379
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v6
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: pnpm
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      # The API imports @dento/shared, which resolves to its built dist/ via
+      # package.json exports. Unlike the turbo-driven `test`/`build` jobs (which
+      # build workspace deps via ^build), this job invokes vitest directly, so
+      # we must build @dento/shared first or the import fails to resolve.
+      - name: Build workspace dependencies
+        run: pnpm --filter @dento/shared build
+
+      - name: Contract tests
+        run: pnpm --filter @dento/api test:contract
+        env:
+          REDIS_URL: redis://localhost:6379

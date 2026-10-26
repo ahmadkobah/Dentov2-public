@@ -1,0 +1,31 @@
+@import '@dento/ui/globals.css';
+
+/* Tell Tailwind v4 to scan @dento/ui source for utility classes */
+@source "../../../../packages/ui/src";
+
+/* ═══════════════════════════════════════════════════════════════════════
+   Clinic App — Green Brand Theme
+   Default primary: Emerald Green (#16a34a)
+   Overridable at runtime via Branding Propagation (§14).
+   ═══════════════════════════════════════════════════════════════════════ */
+
+@theme {
+  /* ── Brand Color Scale (Green — default, overridden per tenant) ── */
+  --color-brand-25: #f0fdf4;
+  --color-brand-50: #dcfce7;
+  --color-brand-100: #bbf7d0;
+  --color-brand-200: #86efac;
+  --color-brand-300: #4ade80;
+  --color-brand-400: #22c55e;
+  --color-brand-500: #16a34a;
+  --color-brand-600: #15803d;
+  --color-brand-700: #166534;
+  --color-brand-800: #14532d;
+  --color-brand-900: #052e16;
+  --color-brand-950: #022c22;
+}
+
+/* Arabic font for RTL mode */
+html[lang='ar'] {
+  font-family: 'Noto Sans Arabic', sans-serif;
+}

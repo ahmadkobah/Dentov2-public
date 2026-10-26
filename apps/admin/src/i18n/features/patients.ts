@@ -1,0 +1,167 @@
+export const patients = {
+  // Page
+  'patients.title': 'Patients',
+  'patients.subtitle': 'Manage patient records',
+  'patients.newPatient': 'New Patient',
+  'patients.search': 'Search by name, phone, code, or email…',
+
+  // Filters
+  'patients.filter.allGenders': 'All Genders',
+  'patients.filter.male': 'Male',
+  'patients.filter.female': 'Female',
+  'patients.filter.other': 'Other',
+
+  // Table columns
+  'patients.col.code': 'Code',
+  'patients.col.name': 'Name',
+  'patients.col.gender': 'Gender',
+  'patients.col.age': 'Age',
+  'patients.col.phone': 'Phone',
+  'patients.col.source': 'Source',
+  'patients.col.registered': 'Registered',
+
+  // Actions
+  'patients.actionsMenu': 'Patient actions',
+  'patients.action.view': 'View',
+  'patients.action.edit': 'Edit',
+  'patients.action.delete': 'Delete',
+
+  // Toast
+  'patients.toast.created': 'Patient created successfully',
+  'patients.toast.createFailed': 'Failed to create patient',
+  'patients.toast.updated': 'Patient updated',
+  'patients.toast.updateFailed': 'Failed to update patient',
+  'patients.toast.deactivated': 'Patient deactivated',
+  'patients.toast.deactivateFailed': 'Failed to delete patient',
+
+  // Confirm dialog
+  'patients.confirm.deactivateTitle': 'Deactivate Patient',
+  'patients.confirm.deactivateMessage':
+    'This patient record will be soft-deleted and can be restored later.',
+
+  // Empty state
+  'patients.empty.title': 'No patients yet',
+  'patients.empty.description': 'Add your first patient to get started.',
+
+  // Detail page
+  'patients.detail.backToPatients': 'Back to patients',
+  'patients.detail.loadFailed': 'Failed to load patient',
+  'patients.detail.notFound': 'Patient not found',
+
+  // Detail tabs
+  'patients.tab.info': 'Info',
+  'patients.tab.allergies': 'Allergies & Medical History',
+  'patients.tab.appointments': 'Appointments',
+  'patients.tab.dentalChart': 'Dental Chart',
+  'patients.tab.treatmentPlans': 'Treatment Plans',
+  'patients.tab.procedureNotes': 'Procedure Notes',
+  'patients.tab.xrays': 'X-Rays',
+  'patients.tab.cbct': 'CBCT',
+  'patients.tab.scans': '3D Scans',
+  'patients.tab.consentForms': 'Consent Forms',
+  'patients.tab.prescriptions': 'Prescriptions',
+  'patients.tab.labOrders': 'Lab Orders',
+  'patients.tab.billing': 'Billing',
+
+  // Patient Form
+  'patients.form.newTitle': 'New Patient',
+  'patients.form.editTitle': 'Edit Patient',
+  'patients.form.newDesc': 'Register a new patient record',
+  'patients.form.editDesc': 'Update patient information',
+  'patients.form.firstNameEn': 'First Name (EN)',
+  'patients.form.firstNameAr': 'First Name (AR)',
+  'patients.form.lastNameEn': 'Last Name (EN)',
+  'patients.form.lastNameAr': 'Last Name (AR)',
+  'patients.form.dob': 'Date of Birth',
+  'patients.form.gender': 'Gender',
+  'patients.form.phone': 'Phone',
+  'patients.form.email': 'Email',
+  'patients.form.nationalId': 'National ID',
+  'patients.form.address': 'Address',
+  'patients.form.city': 'City',
+  'patients.form.country': 'Country',
+  'patients.form.emergencyName': 'Emergency Contact Name',
+  'patients.form.emergencyPhone': 'Emergency Contact Phone',
+  'patients.form.source': 'Source',
+  'patients.form.sourceAdmin': 'Admin',
+  'patients.form.sourceWebsite': 'Website',
+  'patients.form.sourcePhone': 'Phone',
+  'patients.form.sourceWalkIn': 'Walk-In',
+  'patients.form.sourceReferral': 'Referral',
+  'patients.form.preferredLanguage': 'Preferred Language',
+  'patients.form.notes': 'Notes',
+  'patients.form.create': 'Create Patient',
+  'patients.form.save': 'Save Changes',
+
+  // Patient Info Tab
+  'patients.info.editProfile': 'Edit Profile',
+
+  // Family links
+  'patients.family.title': 'Family Links',
+  'patients.family.spouse': 'Spouse',
+  'patients.family.parent': 'Parent',
+  'patients.family.child': 'Child',
+  'patients.family.sibling': 'Sibling',
+  'patients.family.linked': 'Family member linked',
+  'patients.family.removed': 'Family link removed',
+  'patients.family.cannotLinkSelf': 'Cannot link patient to themselves',
+  'patients.family.alreadyLinked': 'This patient is already linked',
+
+  // Medical History
+  'patients.medical.title': 'Medical Conditions',
+  'patients.medical.diabetes': 'Diabetes',
+  'patients.medical.hypertension': 'Hypertension',
+  'patients.medical.heartDisease': 'Heart Disease',
+  'patients.medical.bleedingDisorder': 'Bleeding Disorder',
+  'patients.medical.hepatitis': 'Hepatitis',
+  'patients.medical.asthma': 'Asthma',
+  'patients.medical.epilepsy': 'Epilepsy',
+  'patients.medical.pregnant': 'Pregnant',
+  'patients.medical.smoker': 'Smoker',
+  'patients.medical.bloodThinners': 'Taking Blood Thinners',
+  'patients.medical.allergicAnesthesia': 'Allergic to Anesthesia',
+  'patients.medical.allergicPenicillin': 'Allergic to Penicillin',
+  'patients.medical.allergicLatex': 'Allergic to Latex',
+  'patients.medical.dentalAnxiety': 'Dental Anxiety',
+  'patients.medical.smokingFrequency': 'Smoking Frequency',
+  'patients.medical.anxietyLevel': 'Anxiety Level',
+  'patients.medical.previousSurgeries': 'Previous Dental Surgeries',
+  'patients.medical.otherConditions': 'Other Conditions',
+  'patients.medical.additionalNotes': 'Additional Notes',
+  'patients.medical.lastDentalVisit': 'Last Dental Visit',
+  'patients.medical.save': 'Save Medical History',
+  'patients.medical.updated': 'Medical history updated',
+  'patients.medical.updateFailed': 'Failed to update medical history',
+
+  // Allergies
+  'patients.allergies.title': 'Allergies ({{count}})',
+  'patients.allergies.add': 'Add Allergy',
+  'patients.allergies.allergen': 'Allergen',
+  'patients.allergies.reaction': 'Reaction',
+  'patients.allergies.severity': 'Severity',
+  'patients.allergies.mild': 'Mild',
+  'patients.allergies.moderate': 'Moderate',
+  'patients.allergies.severe': 'Severe',
+  'patients.allergies.added': 'Allergy added',
+  'patients.allergies.addFailed': 'Failed to add allergy',
+  'patients.allergies.removed': 'Allergy removed',
+  'patients.allergies.removeFailed': 'Failed to remove allergy',
+  'patients.allergies.empty': 'No known allergies recorded.',
+
+  // Sub-tab empty states
+  'patients.appointments.empty': 'No appointments found for this patient.',
+  'patients.consentForms.title': 'Consent Form',
+  'patients.consentForms.signed': 'Signed',
+  'patients.consentForms.viewPdf': 'View PDF',
+  'patients.consentForms.empty': 'No consent forms found for this patient.',
+  'patients.cbct.empty': 'No CBCT orders found for this patient.',
+  'patients.procedureNotes.empty': 'No procedure notes found for this patient.',
+  'patients.procedureNotes.followUp': 'Follow-up',
+  'patients.procedureNotes.materials': '{{count}} materials',
+  'patients.prescriptions.col.rxNumber': 'Rx #',
+  'patients.prescriptions.col.medications': 'Medications',
+  'patients.prescriptions.col.diagnosis': 'Diagnosis',
+  'patients.prescriptions.col.status': 'Status',
+  'patients.prescriptions.col.date': 'Date',
+  'patients.prescriptions.empty': 'No prescriptions found for this patient.',
+};

@@ -1,0 +1,85 @@
+# ─────────────────────────────────────────────────────────────────────────────
+# Dento V2 — Production docker-compose (Oracle VM)
+# Place at: /srv/dento/docker-compose.yml
+# Reads:    /srv/dento/.env  (NEVER commit; chmod 600)
+#
+# Usage on the VM:
+#   cd /srv/dento
+#   docker login ghcr.io        # one-time, with a GHCR read PAT
+#   docker compose pull
+#   docker compose up -d
+# ─────────────────────────────────────────────────────────────────────────────
+
+services:
+  # ───────────────────────────────────────────────────────────
+  # Redis — self-hosted on the VM (replaces Upstash for normal ops).
+  # No public port; only reachable on the dento-net docker network.
+  # AOF persistence + LRU eviction keep the working set bounded.
+  # ───────────────────────────────────────────────────────────
+  redis:
+    image: redis:7-alpine
+    container_name: dento-redis
+    restart: unless-stopped
+    command:
+      - redis-server
+      - --appendonly
+      - 'yes'
+      - --maxmemory
+      - 256mb
+      - --maxmemory-policy
+      - allkeys-lru
+    volumes:
+      - redis-data:/data
+    networks: [dento-net]
+    healthcheck:
+      test: ['CMD', 'redis-cli', 'ping']
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 5s
+    logging:
+      driver: json-file
+      options:
+        max-size: '10m'
+        max-file: '3'
+
+  api:
+    image: ghcr.io/ahmadkobah/dentov2/dento-api:${IMAGE_TAG:-latest}
+    container_name: dento-api
+    restart: unless-stopped
+    env_file: .env
+    environment:
+      NODE_ENV: production
+      HOST: 0.0.0.0
+      PORT: '3000'
+    depends_on:
+      redis:
+        condition: service_healthy
+    networks: [dento-net]
+    ports:
+      # Bind to localhost only — Caddy on the host proxies to it
+      - '127.0.0.1:3000:3000'
+    healthcheck:
+      test:
+        [
+          'CMD',
+          'node',
+          '-e',
+          "require('http').get('http://127.0.0.1:3000/health/live',r=>process.exit(r.statusCode===200?0:1)).on('error',()=>process.exit(1))",
+        ]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 30s
+    logging:
+      driver: json-file
+      options:
+        max-size: '10m'
+        max-file: '5'
+
+networks:
+  dento-net:
+    driver: bridge
+
+volumes:
+  redis-data:

@@ -1,0 +1,93 @@
+name: Deploy Developer Portal
+
+on:
+  workflow_dispatch:
+    inputs:
+      environment:
+        description: 'Deployment environment'
+        required: true
+        default: 'production'
+        type: choice
+        options:
+          - production
+          - staging
+  push:
+    branches: [main]
+    paths:
+      - 'apps/developer/**'
+      - 'packages/shared/**'
+      - 'packages/ui/**'
+
+concurrency:
+  group: deploy-developer-${{ github.event.inputs.environment || 'production' }}
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    name: Deploy Developer to Vercel
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    environment: ${{ github.event.inputs.environment || 'production' }}
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v6
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: pnpm
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Build packages
+        run: pnpm --filter @dento/shared build && pnpm --filter @dento/ui build
+
+      - name: Build Developer
+        run: pnpm --filter @dento/developer build
+        env:
+          VITE_API_URL: ${{ secrets.API_URL }}
+          VITE_SENTRY_DSN: ${{ secrets.DEVELOPER_SENTRY_DSN }}
+
+      - name: Install Vercel CLI
+        run: npm install -g vercel
+
+      - name: Pull Vercel Environment
+        run: |
+          if [ "${{ github.event.inputs.environment || 'production' }}" = "production" ]; then
+            vercel pull --yes --environment=production --token=${{ secrets.VERCEL_TOKEN }}
+          else
+            vercel pull --yes --environment=preview --token=${{ secrets.VERCEL_TOKEN }}
+          fi
+        working-directory: apps/developer
+        env:
+          VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+          VERCEL_PROJECT_ID: ${{ secrets.VERCEL_DEVELOPER_PROJECT_ID }}
+
+      - name: Package for Vercel deployment
+        run: |
+          mkdir -p apps/developer/.vercel/output/static
+          cp -r apps/developer/dist/. apps/developer/.vercel/output/static/
+          echo '{"version":3,"routes":[{"handle":"filesystem"},{"src":"/(.*)","dest":"/index.html"}]}' > apps/developer/.vercel/output/config.json
+
+      - name: Deploy to Vercel
+        id: deploy
+        run: |
+          if [ "${{ github.event.inputs.environment || 'production' }}" = "production" ]; then
+            URL=$(vercel deploy --prod --prebuilt --token=${{ secrets.VERCEL_TOKEN }})
+          else
+            URL=$(vercel deploy --prebuilt --token=${{ secrets.VERCEL_TOKEN }})
+          fi
+          echo "url=$URL" >> $GITHUB_OUTPUT
+        working-directory: apps/developer
+        env:
+          VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+          VERCEL_PROJECT_ID: ${{ secrets.VERCEL_DEVELOPER_PROJECT_ID }}
+
+      - name: Deployment URL
+        run: echo "🚀 Deployed to ${{ steps.deploy.outputs.url }}"

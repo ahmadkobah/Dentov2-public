@@ -1,0 +1,12 @@
+export { dentalLabs } from './dentalLabs.js';
+export { doctors } from './doctors.js';
+export { documents } from './documents.js';
+export { installments } from './installments.js';
+export { insurance } from './insurance.js';
+export { inventory } from './inventory.js';
+export { invoices } from './invoices.js';
+export { labOrders } from './labOrders.js';
+export { labOrderTypes } from './labOrderTypes.js';
+export { leave } from './leave.js';
+export { medications } from './medications.js';
+export { notifications } from './notifications.js';

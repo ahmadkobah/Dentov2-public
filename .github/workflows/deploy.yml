@@ -1,0 +1,108 @@
+name: Deploy API
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - 'apps/api/**'
+      - 'packages/shared/**'
+      - 'infra/docker-compose.prod.yml'
+
+concurrency:
+  group: deploy-api
+  cancel-in-progress: false
+
+env:
+  REGISTRY: ghcr.io
+  IMAGE_NAME: ${{ github.repository }}/dento-api
+  REMOTE_APP_ROOT: /srv/dento
+
+jobs:
+  build:
+    name: Build & Push API Image
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    permissions:
+      contents: read
+      packages: write
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v4
+
+      - name: Log in to GHCR
+        uses: docker/login-action@v4
+        with:
+          registry: ${{ env.REGISTRY }}
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Extract metadata
+        id: meta
+        uses: docker/metadata-action@v6
+        with:
+          images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
+          tags: |
+            type=sha,prefix=
+            type=raw,value=latest
+
+      - name: Build and push image
+        uses: docker/build-push-action@v7
+        with:
+          context: .
+          file: apps/api/Dockerfile
+          push: true
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+
+  deploy:
+    name: Deploy to Oracle VM
+    needs: build
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    steps:
+      - name: Checkout (for compose file)
+        uses: actions/checkout@v4
+
+      - name: Configure SSH
+        run: |
+          mkdir -p ~/.ssh
+          echo "${{ secrets.ORACLE_SSH_KEY }}" > ~/.ssh/deploy_key
+          chmod 600 ~/.ssh/deploy_key
+          ssh-keyscan -H "${{ secrets.ORACLE_HOST }}" >> ~/.ssh/known_hosts 2>/dev/null
+
+      - name: Sync compose file
+        run: |
+          scp -i ~/.ssh/deploy_key \
+            infra/docker-compose.prod.yml \
+            deploy@${{ secrets.ORACLE_HOST }}:${{ env.REMOTE_APP_ROOT }}/docker-compose.yml
+
+      - name: Pull image & restart API
+        run: |
+          ssh -i ~/.ssh/deploy_key \
+            deploy@${{ secrets.ORACLE_HOST }} \
+            "cd ${{ env.REMOTE_APP_ROOT }} && docker compose pull && docker compose up -d --remove-orphans"
+
+      - name: Health check
+        run: |
+          for i in $(seq 1 30); do
+            if curl -fsS "${{ secrets.API_URL }}/health/live" >/dev/null 2>&1; then
+              echo "✅ API is live"
+              exit 0
+            fi
+            echo "Waiting for API... ($i/30)"
+            sleep 5
+          done
+          echo "❌ API failed health check"
+          exit 1
+
+      - name: Cleanup SSH key
+        if: always()
+        run: rm -f ~/.ssh/deploy_key

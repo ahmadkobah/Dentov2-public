@@ -1,0 +1,164 @@
+# docker-compose.prod.yml — Production overrides
+# Usage: docker compose -f docker-compose.yml -f docker-compose.prod.yml up -d
+
+services:
+  mongodb:
+    command: ['mongod', '--wiredTigerCacheSizeGB', '1', '--quiet']
+    deploy:
+      resources:
+        limits:
+          cpus: '2.0'
+          memory: 2G
+        reservations:
+          cpus: '0.5'
+          memory: 512M
+    healthcheck:
+      test: ['CMD', 'mongosh', '--eval', "db.adminCommand('ping')"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+      start_period: 30s
+    logging:
+      driver: json-file
+      options:
+        max-size: '50m'
+        max-file: '5'
+
+  redis:
+    command:
+      [
+        'redis-server',
+        '--maxmemory',
+        '256mb',
+        '--maxmemory-policy',
+        'allkeys-lru',
+        '--appendonly',
+        'yes',
+      ]
+    deploy:
+      resources:
+        limits:
+          cpus: '1.0'
+          memory: 512M
+        reservations:
+          cpus: '0.25'
+          memory: 128M
+    healthcheck:
+      test: ['CMD', 'redis-cli', 'ping']
+      interval: 15s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
+    logging:
+      driver: json-file
+      options:
+        max-size: '20m'
+        max-file: '3'
+
+  api:
+    image: ghcr.io/ahmad/dentov2/api:latest
+    build:
+      context: .
+      dockerfile: apps/api/Dockerfile
+      args:
+        NODE_ENV: production
+    deploy:
+      resources:
+        limits:
+          cpus: '2.0'
+          memory: 1G
+        reservations:
+          cpus: '0.5'
+          memory: 256M
+      restart_policy:
+        condition: on-failure
+        delay: 5s
+        max_attempts: 5
+        window: 120s
+    healthcheck:
+      test: ['CMD', 'wget', '--no-verbose', '--tries=1', '--spider', 'http://localhost:3001/health']
+      interval: 30s
+      timeout: 10s
+      retries: 5
+      start_period: 30s
+    depends_on:
+      mongodb:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    logging:
+      driver: json-file
+      options:
+        max-size: '50m'
+        max-file: '10'
+
+  admin:
+    image: ghcr.io/ahmad/dentov2/admin:latest
+    build:
+      context: .
+      dockerfile: apps/admin/Dockerfile
+      args:
+        VITE_API_URL: ${VITE_API_URL}
+        VITE_SENTRY_DSN: ${VITE_SENTRY_DSN:-}
+        VITE_VAPID_PUBLIC_KEY: ${VITE_VAPID_PUBLIC_KEY:-}
+    environment:
+      # L-2: API origin allowed by the SPA's Content-Security-Policy. Falls
+      # back to 'self' which only works when admin and api share an origin.
+      CSP_API_ORIGIN: ${CSP_API_ORIGIN:-'self'}
+      CSP_EXTRA_CONNECT: ${CSP_EXTRA_CONNECT:-}
+    deploy:
+      resources:
+        limits:
+          cpus: '0.5'
+          memory: 128M
+        reservations:
+          cpus: '0.1'
+          memory: 32M
+    healthcheck:
+      test: ['CMD', 'wget', '--no-verbose', '--tries=1', '--spider', 'http://localhost:80']
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 10s
+    depends_on:
+      api:
+        condition: service_healthy
+    logging:
+      driver: json-file
+      options:
+        max-size: '10m'
+        max-file: '3'
+
+  developer:
+    image: ghcr.io/ahmad/dentov2/developer:latest
+    build:
+      context: .
+      dockerfile: apps/developer/Dockerfile
+      args:
+        VITE_API_URL: ${VITE_API_URL}
+        VITE_SENTRY_DSN: ${VITE_SENTRY_DSN:-}
+    environment:
+      CSP_API_ORIGIN: ${CSP_API_ORIGIN:-'self'}
+      CSP_EXTRA_CONNECT: ${CSP_EXTRA_CONNECT:-}
+    deploy:
+      resources:
+        limits:
+          cpus: '0.5'
+          memory: 128M
+        reservations:
+          cpus: '0.1'
+          memory: 32M
+    healthcheck:
+      test: ['CMD', 'wget', '--no-verbose', '--tries=1', '--spider', 'http://localhost:80']
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 10s
+    depends_on:
+      api:
+        condition: service_healthy
+    logging:
+      driver: json-file
+      options:
+        max-size: '10m'
+        max-file: '3'

@@ -1,0 +1,355 @@
+import {
+  LayoutDashboard,
+  Users,
+  CalendarDays,
+  Stethoscope,
+  FileText,
+  Receipt,
+  CreditCard,
+  Pill,
+  ImageIcon,
+  FlaskConical,
+  ShieldCheck,
+  Package,
+  ListTree,
+  Building2,
+  UserCog,
+  Clock,
+  CalendarClock,
+  DollarSign,
+  FileSignature,
+  Bell,
+  BarChart,
+  Wallet,
+  Settings,
+  Activity,
+  Globe,
+  CreditCard as SubscriptionIcon,
+  Layers,
+  ArrowLeftRight,
+  ClipboardList,
+  MessageSquare,
+  AlertTriangle,
+  History,
+  Bookmark,
+  Webhook,
+  ScanLine,
+  Zap,
+  type LucideIcon,
+} from 'lucide-react';
+
+export interface SidebarItem {
+  label: string;
+  icon: LucideIcon;
+  path: string;
+  group: string;
+  /** Module slug for RBAC filtering — maps to the role-permission matrix */
+  module?: string;
+  /** Nested children rendered as a collapsible sub-menu */
+  children?: SidebarItem[];
+}
+
+export const sidebarConfig: SidebarItem[] = [
+  // Core
+  { label: 'Dashboard', icon: LayoutDashboard, path: '/', group: 'Core', module: 'dashboard' },
+  {
+    label: 'Daily Operations',
+    icon: Activity,
+    path: '/daily-operations',
+    group: 'Core',
+    module: 'appointments',
+  },
+
+  // Clinical — patient care flow
+  { label: 'Patients', icon: Users, path: '/patients', group: 'Clinical', module: 'patients' },
+  { label: 'Doctors', icon: UserCog, path: '/doctors', group: 'Clinical', module: 'doctors' },
+  {
+    label: 'Services',
+    icon: ListTree,
+    path: '/services',
+    group: 'Clinical',
+    module: 'services_catalog',
+  },
+  { label: 'Schedules', icon: Clock, path: '/schedules', group: 'Clinical', module: 'schedules' },
+  {
+    label: 'Appointments',
+    icon: CalendarDays,
+    path: '/appointments',
+    group: 'Clinical',
+    module: 'appointments',
+  },
+  {
+    label: 'Appt Types',
+    icon: ListTree,
+    path: '/appointment-types',
+    group: 'Clinical',
+    module: 'appointments',
+  },
+  {
+    label: 'Online Bookings',
+    icon: Globe,
+    path: '/online-bookings',
+    group: 'Clinical',
+    module: 'appointments',
+  },
+  {
+    label: 'Waitlist',
+    icon: Clock,
+    path: '/waitlist',
+    group: 'Clinical',
+    module: 'appointments',
+  },
+  {
+    label: 'Treatment Plans',
+    icon: FileText,
+    path: '/treatment-plans',
+    group: 'Clinical',
+    module: 'treatment_plans',
+  },
+  {
+    label: 'Procedure Notes',
+    icon: FileSignature,
+    path: '/procedure-notes',
+    group: 'Clinical',
+    module: 'procedure_notes',
+  },
+  {
+    label: 'Consent Forms',
+    icon: FileSignature,
+    path: '/consent',
+    group: 'Clinical',
+    module: 'consent',
+  },
+
+  // Medical — diagnostics & records
+  {
+    label: 'Prescriptions & Medications',
+    icon: Pill,
+    path: '/prescriptions',
+    group: 'Medical',
+    module: 'prescriptions',
+  },
+  { label: 'X-Rays', icon: ImageIcon, path: '/xrays', group: 'Medical', module: 'xrays' },
+  { label: 'CBCT', icon: ImageIcon, path: '/cbct', group: 'Medical', module: 'xrays' },
+  { label: '3D Scans', icon: ScanLine, path: '/scans', group: 'Medical', module: 'xrays' },
+
+  // Financial — billing lifecycle
+  { label: 'Invoices', icon: Receipt, path: '/invoices', group: 'Financial', module: 'invoices' },
+  {
+    label: 'Payments',
+    icon: CreditCard,
+    path: '/payments',
+    group: 'Financial',
+    module: 'payments',
+  },
+  {
+    label: 'Installments',
+    icon: DollarSign,
+    path: '/installments',
+    group: 'Financial',
+    module: 'installments',
+  },
+  {
+    label: 'Insurance Co.',
+    icon: ShieldCheck,
+    path: '/insurance-companies',
+    group: 'Financial',
+    module: 'insurance',
+  },
+  {
+    label: 'Claims',
+    icon: ShieldCheck,
+    path: '/insurance-claims',
+    group: 'Financial',
+    module: 'insurance',
+  },
+  {
+    label: 'Commissions',
+    icon: Wallet,
+    path: '/commissions',
+    group: 'Financial',
+    module: 'commissions',
+  },
+
+  // Operations — clinic management
+  {
+    label: 'Branches',
+    icon: Building2,
+    path: '/branches',
+    group: 'Operations',
+    module: 'branches',
+  },
+  {
+    label: 'Inventory',
+    icon: Package,
+    path: '/inventory',
+    group: 'Operations',
+    module: 'inventory',
+    children: [
+      {
+        label: 'Categories',
+        icon: Layers,
+        path: '/inventory/categories',
+        group: 'Operations',
+        module: 'inventory',
+      },
+      {
+        label: 'Transfers',
+        icon: ArrowLeftRight,
+        path: '/inventory/transfers',
+        group: 'Operations',
+        module: 'inventory',
+      },
+      {
+        label: 'Stock Count',
+        icon: ClipboardList,
+        path: '/inventory/stock-count',
+        group: 'Operations',
+        module: 'inventory',
+      },
+      {
+        label: 'Expiry Tracker',
+        icon: AlertTriangle,
+        path: '/inventory/expiry',
+        group: 'Operations',
+        module: 'inventory',
+      },
+    ],
+  },
+  {
+    label: 'Dental Labs',
+    icon: Building2,
+    path: '/dental-labs',
+    group: 'Operations',
+    module: 'lab_orders',
+  },
+  {
+    label: 'Lab Orders',
+    icon: FlaskConical,
+    path: '/lab-orders',
+    group: 'Operations',
+    module: 'lab_orders',
+  },
+  {
+    label: 'Lab Order Types',
+    icon: ListTree,
+    path: '/lab-order-types',
+    group: 'Operations',
+    module: 'lab_orders',
+  },
+
+  // Reports & Analytics
+  {
+    label: 'Reports',
+    icon: BarChart,
+    path: '/reports',
+    group: 'Reports',
+    module: 'reports',
+    children: [
+      {
+        label: 'Financial',
+        icon: DollarSign,
+        path: '/reports/financial',
+        group: 'Reports',
+        module: 'reports',
+      },
+      {
+        label: 'Patient',
+        icon: Users,
+        path: '/reports/patient',
+        group: 'Reports',
+        module: 'reports',
+      },
+      {
+        label: 'Appointments',
+        icon: CalendarDays,
+        path: '/reports/appointment',
+        group: 'Reports',
+        module: 'reports',
+      },
+      {
+        label: 'Clinical',
+        icon: Stethoscope,
+        path: '/reports/clinical',
+        group: 'Reports',
+        module: 'reports',
+      },
+      {
+        label: 'Operational',
+        icon: Settings,
+        path: '/reports/operational',
+        group: 'Reports',
+        module: 'reports',
+      },
+      {
+        label: 'Inventory',
+        icon: Package,
+        path: '/reports/inventory',
+        group: 'Reports',
+        module: 'reports',
+      },
+    ],
+  },
+  { label: 'Saved', icon: Bookmark, path: '/reports/saved', group: 'Reports', module: 'reports' },
+  {
+    label: 'Scheduled',
+    icon: CalendarClock,
+    path: '/reports/scheduled',
+    group: 'Reports',
+    module: 'reports',
+  },
+  {
+    label: 'History',
+    icon: History,
+    path: '/reports/history',
+    group: 'Reports',
+    module: 'reports',
+  },
+
+  // System
+  { label: 'Users', icon: Users, path: '/users', group: 'System', module: 'users' },
+  {
+    label: 'Notifications',
+    icon: Bell,
+    path: '/notifications',
+    group: 'System',
+    module: 'notifications',
+  },
+  {
+    label: 'Alert Rules',
+    icon: AlertTriangle,
+    path: '/notifications/alert-rules',
+    group: 'System',
+    module: 'notifications',
+  },
+  { label: 'Settings', icon: Settings, path: '/settings', group: 'System', module: 'settings' },
+  { label: 'Workflows', icon: Zap, path: '/workflows', group: 'System', module: 'settings' },
+  {
+    label: 'Webhooks',
+    icon: Webhook,
+    path: '/webhooks',
+    group: 'System',
+    module: 'settings',
+  },
+  {
+    label: 'Audit Logs',
+    icon: ShieldCheck,
+    path: '/audit-logs',
+    group: 'System',
+    module: 'settings',
+  },
+  {
+    label: 'Subscription',
+    icon: SubscriptionIcon,
+    path: '/subscription',
+    group: 'System',
+    module: 'settings',
+  },
+  {
+    label: 'Platform Notes',
+    icon: MessageSquare,
+    path: '/platform-notes',
+    group: 'System',
+    module: 'settings',
+  },
+];
